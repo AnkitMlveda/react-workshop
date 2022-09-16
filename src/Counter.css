@@ -1,0 +1,9 @@
+.countbtn,.resetbutton{
+    background-color: #000;
+    color: #fff;
+    margin-right: 2px;
+}
+.countermain{
+    padding: 12px;
+    background-color: #81db81;
+}
