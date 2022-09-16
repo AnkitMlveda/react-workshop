@@ -1,0 +1,15 @@
+.main {
+    padding: 12px;
+}
+.sub{
+    border-style: double;
+    border-radius: 6px;
+    padding: 12px;
+    background-color: #bfbfbf;
+}
+.userinput{
+    padding: 6px;
+}
+.userinput:focus{
+ outline:none;
+}
