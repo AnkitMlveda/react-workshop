@@ -13,15 +13,15 @@ export default function Todo() {
   }
   return (
     <div className="main">
-      <h1>Todo list</h1>
-      <div className="sub">
-        <input value={inputValue} onChange={updateVal}></input>
-        <button onClick={addTodo}>Add</button>
+      <h1 className="active">Todo App</h1>
+      <div className="sub row">
+        <input value={inputValue} onChange={updateVal} className="form-control col" placeholder="Enter Your Task"></input>
+        <button onClick={addTodo} className="btn btn-primary col-sm-2">Add</button>
       </div>
       {tasks.map((task) => (
           <div key={task.id} className="sub1">
-            <ul className="content">
-              <li>{task.value}</li>
+            <ul className="content list-group">
+              <li className="list-group-item">{task.value}</li>
             </ul>
           </div>
       ))}
