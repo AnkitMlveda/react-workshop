@@ -1,10 +1,19 @@
+import { useState } from 'react';
 import './App.css';
-import Signup from './Signupform';
+import Header from './Header';
+import Body from './Body';
+import { CounterContext } from './CounterContext';
 
 function App() {
+  const [count,setcount]= useState(0);
+
   return (
+ 
     <div className="App">
-      <Signup/>
+         <CounterContext.Provider value={[count,setcount]}>
+      <Header/>
+      <Body/>
+      </CounterContext.Provider>
     </div>
   );
 }
