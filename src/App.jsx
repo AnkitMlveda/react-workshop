@@ -1,10 +1,20 @@
 import './App.css';
-import Todo from './Todo';
+import Header from './Header';
+import Body from './Body';
+import { useState } from 'react';
+import Counter from './Counter';
 
 function App() {
+  const [count,setcount] = useState(0);
+
   return (
     <div className="App">
-      <Todo/>
+      <Header>
+      <Counter count={count} setcount={setcount}/>
+      </Header>
+      <Body>
+      <Counter count={count} setcount={setcount}/>
+      </Body>
     </div>
   );
 }
