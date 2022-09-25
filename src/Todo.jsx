@@ -1,5 +1,6 @@
 import "./Todo.css";
 import { useState } from "react";
+import { v4 as uuid } from "uuid";
 
 export default function Todo() {
   const [inputValue, setInputValue] = useState("");
@@ -8,21 +9,34 @@ export default function Todo() {
     setInputValue(e.target.value);
   }
   function addTodo() {
-    setTasks(tasks.concat([{ value: inputValue, id: Date.now() }]));
+    if(inputValue === ""){
+      document.getElementsByClassName("addbtn").disbled= true;
+    }
+    else{
+    setTasks(tasks.concat([{ value: inputValue, id: uuid()}]));
+   // console.log(uuid());
     setInputValue("");
+    }
+  }
+  function removetask(){
+    let newtasklist = [...tasks];
+    let demo= newtasklist.splice(tasks.value);
+    console.log(demo);
+    setTasks(newtasklist);
   }
   return (
     <div className="main">
       <h1 className="active">Todo App</h1>
       <div className="sub row">
         <input value={inputValue} onChange={updateVal} className="form-control col" placeholder="Enter Your Task"></input>
-        <button onClick={addTodo} className="btn btn-primary col-sm-2">Add</button>
+        <button onClick={addTodo} className="btn btn-primary col-sm-1 addbtn">+</button>
       </div>
       {tasks.map((task) => (
-          <div key={task.id} className="sub1">
-            <ul className="content list-group">
-              <li className="list-group-item">{task.value}</li>
-            </ul>
+          <div key={task.id} className="content">
+            <div className="row">
+              <p className="col custom-border">{task.value}</p>
+              <button onClick={removetask} className="btn btn-danger col-sm-3">Remove</button>
+            </div>
           </div>
       ))}
     </div>
