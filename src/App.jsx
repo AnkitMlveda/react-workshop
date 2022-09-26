@@ -13,7 +13,7 @@ function App() {
       <Counter count={count} setcount={setcount}/>
       </Header>
       <Body>
-      <Counter count={count} setcount={setcount}/>
+      <Counter count={count} setcount={setcount} showh1={false}/>
       </Body>
     </div>
   );
