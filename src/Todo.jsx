@@ -5,6 +5,7 @@ import { v4 as uuid } from "uuid";
 export default function Todo() {
   const [inputValue, setInputValue] = useState("");
   const [tasks, setTasks] = useState([]);
+
   function updateVal(e) {
     setInputValue(e.target.value);
   }
@@ -18,10 +19,9 @@ export default function Todo() {
     setInputValue("");
     }
   }
-  function removetask(){
+  function removetask(a,id){
     let newtasklist = [...tasks];
-    let demo= newtasklist.splice(tasks.value);
-    console.log(demo);
+    newtasklist.splice(tasks.id,1);
     setTasks(newtasklist);
   }
   return (
