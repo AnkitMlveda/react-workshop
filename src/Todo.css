@@ -1,5 +1,9 @@
 .content{
     padding: 12px;
+    list-style: none;
+}
+.maincontent{
+padding-left: 0px;
 }
 .main{
     width: 50%;

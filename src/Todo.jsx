@@ -15,13 +15,12 @@ export default function Todo() {
     }
     else{
     setTasks(tasks.concat([{ value: inputValue, id: uuid()}]));
-   // console.log(uuid());
     setInputValue("");
     }
   }
-  function removetask(a,id){
+  function removetask(index){
     let newtasklist = [...tasks];
-    newtasklist.splice(tasks.id,1);
+    newtasklist.splice(index,1);
     setTasks(newtasklist);
   }
   return (
@@ -31,14 +30,16 @@ export default function Todo() {
         <input value={inputValue} onChange={updateVal} className="form-control col" placeholder="Enter Your Task"></input>
         <button onClick={addTodo} className="btn btn-primary col-sm-1 addbtn">+</button>
       </div>
-      {tasks.map((task) => (
-          <div key={task.id} className="content">
+      <ul class="maincontent">
+      {tasks.map((task,index) => (
+          <li key={task.id} className="content">
             <div className="row">
               <p className="col custom-border">{task.value}</p>
-              <button onClick={removetask} className="btn btn-danger col-sm-3">Remove</button>
+              <button onClick={()=>removetask(index)} className="btn btn-danger col-sm-3">Remove</button>
             </div>
-          </div>
+          </li>
       ))}
+      </ul>
     </div>
   );
 }
