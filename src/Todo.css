@@ -14,7 +14,7 @@ padding-left: 0px;
 .sub{
     padding: 12px;
 }
-input.form-control.col {
+input.form-control.col,.btn-primary {
     margin-right: 12px;
 }
 .custom-border{
