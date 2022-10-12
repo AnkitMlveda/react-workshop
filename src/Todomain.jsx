@@ -1,20 +1,22 @@
-import "./Todo.css";
-import { useState,useContext, useEffect } from "react";
 //import { v4 as uuid } from "uuid";
-import Todolist from "./Todolist";
 // import { TodoContext } from "./Context";
+import "./Todo.css";
+import { useState, useEffect } from "react";
+import Todolist from "./Todolist";
+import axios from "axios";
 
 export default function Todomain() {
+
+  // const [tasks, setTasks] = useContext(TodoContext);
   const [inputValue, setInputValue] = useState("");
- // const [tasks, setTasks] = useContext(TodoContext);
   const [gettasks, displayTasks] = useState([]);
 
   useEffect(()=>{
-    fetch('http://localhost:3000/posts')
-    .then((res) => res.json())
-    .then((body) => {
-      displayTasks(body);
-    });
+    axios.get('http://localhost:3000/posts')
+    .then((res) => {displayTasks(res.data)});
+    // .then((body) => {
+    //   displayTasks(body);
+    // });
   },[]);
  
   function updateVal(e) {
@@ -31,19 +33,19 @@ export default function Todomain() {
  
     // Post call to Add task in db.json
         const tasklist = inputValue;
-        const headers = new Headers();
-        headers.append('content-type','application/json');
-        fetch('http://localhost:3000/posts',{
-          method:'POST',
-          headers,
-          body: JSON.stringify({tasklist})
+        // const headers = new Headers();
+        // headers.append('content-type','application/json');
+        axios.post('http://localhost:3000/posts',{
+          // method:'POST',
+          // headers,
+          tasklist: tasklist,
         })    
-        .then((res) => res.json())
-        .then((body) => {
-          console.log(body);
-          // alert("Task is created");
-          displayTasks(gettasks.concat([body]));
-        });
+        .then((res) => {displayTasks(gettasks.concat([res.data]))});
+        // .then((body) => {
+        //   console.log(body);
+        //    alert("Task is created");
+        //   displayTasks(gettasks.concat([body]));
+        // });
     // End Post call to add task in db.json  
 
     }
