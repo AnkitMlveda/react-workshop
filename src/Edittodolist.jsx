@@ -20,6 +20,7 @@ export default function Edittodolist({tasks,setTasks,task,index}) {
     .then((body) => {
         let newtasklist = [...tasks];
         //console.log(body);
+        newtasklist[index].tasklist = inputText;
         setTasks(newtasklist);
         setedit(false);
       });
