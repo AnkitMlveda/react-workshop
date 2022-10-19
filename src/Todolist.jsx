@@ -1,7 +1,6 @@
 import "./Todo.css";
 import Edittodolist from "./Edittodolist";
 import {ErrorBoundary} from "react-error-boundary";
-import { Suspense } from "react";
 import React from "react";
 
 export default function Todolist({tasks,setTasks}) {
