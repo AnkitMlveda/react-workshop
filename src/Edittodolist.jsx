@@ -1,6 +1,6 @@
-import "./Todo.css";
 // import { useContext } from "react";
 // import { TodoContext } from "./Context";
+import "./Todo.css";
 import axios from "axios";
 import { useState } from "react";
 
@@ -11,19 +11,28 @@ export default function Edittodolist({tasks,setTasks,task,index}) {
 //  const [tasks, setTasks] = useContext(TodoContext);
     const [isedit,setedit] = useState(false);
     const [inputText, setInputText] = useState("");
+    let [iserror, setError] = useState(false);
 
-  function savetodo(index){
-   // console.log(tasks,index);
-    axios.put(tasks[index].id.toString(), {tasklist:inputText} , {
+  const savetodo = async() => {
+  try{
+   await axios.put(tasks[index].id.toString(), {tasklist:inputText} , {
       baseURL: todoUrl,
     })
     .then((body) => {
         let newtasklist = [...tasks];
-        //console.log(body);
         newtasklist[index].tasklist = inputText;
         setTasks(newtasklist);
         setedit(false);
       });
+    }
+    catch(error){
+        console.error(error);
+        setError(error);
+    }
+  }
+
+  if(iserror){
+    throw iserror;
   }
 
   function removetask(index){
@@ -34,7 +43,6 @@ export default function Edittodolist({tasks,setTasks,task,index}) {
       baseURL: todoUrl,
     })    
     .then((body) => {
-     // console.log(body);
       newtasklist.splice(index,1);
       setTasks(newtasklist);   
     }); 
@@ -59,7 +67,7 @@ export default function Edittodolist({tasks,setTasks,task,index}) {
                       {isedit ? "Cancel" : "Edit"}
                 </button> 
                 {isedit && (
-                      <button className="btn btn-primary col-sm-2" onClick={()=>savetodo(index,tasks)}>Save</button>
+                      <button className="btn btn-primary col-sm-2" onClick={savetodo}>Save</button>
                 )}
                 <button onClick={()=>removetask(index)} className="btn btn-danger col-sm-2">Remove</button>
             </div>

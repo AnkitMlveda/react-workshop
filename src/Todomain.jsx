@@ -14,11 +14,12 @@ export default function Todomain() {
   useEffect(()=>{
     axios.get('http://localhost:3000/posts')
     .then((res) => {displayTasks(res.data)});
-    // .then((body) => {
-    //   displayTasks(body);
-    // });
   },[]);
+
+  // const promise = axios.get('http://localhost:3000/posts')
+  // .then((res) => {displayTasks(res.data)});
  
+  // throw promise;
   function updateVal(e) {
     setInputValue(e.target.value);
   }
@@ -33,19 +34,10 @@ export default function Todomain() {
  
     // Post call to Add task in db.json
         const tasklist = inputValue;
-        // const headers = new Headers();
-        // headers.append('content-type','application/json');
         axios.post('http://localhost:3000/posts',{
-          // method:'POST',
-          // headers,
           tasklist: tasklist,
         })    
         .then((res) => {displayTasks(gettasks.concat([res.data]))});
-        // .then((body) => {
-        //   console.log(body);
-        //    alert("Task is created");
-        //   displayTasks(gettasks.concat([body]));
-        // });
     // End Post call to add task in db.json  
 
     }
