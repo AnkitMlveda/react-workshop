@@ -1,51 +1,67 @@
-// import { useContext } from "react";
-// import { TodoContext } from "./Context";
 import "./Todo.css";
-import axios from "axios";
+//import axios from "axios";
 import { useState } from "react";
+import { deletetodo,savetodo } from "./Todoaxios";
+import { useMutation,useQueryClient } from "@tanstack/react-query";
 
-const todoUrl = "http://localhost:3000/posts";
+// const todoUrl = "http://localhost:3000/posts";
 
 export default function Edittodolist({tasks,setTasks,task,index}) {
-//   const [tasks, setTasks] = useState([]);
-//  const [tasks, setTasks] = useContext(TodoContext);
     const [isedit,setedit] = useState(false);
     const [inputText, setInputText] = useState("");
-    let [iserror, setError] = useState(false);
+   // let [iserror, setError] = useState(false);
+    const queryclient = useQueryClient();
 
-  const savetodo = async() => {
-  try{
-   await axios.put(tasks[index].id.toString(), {tasklist:inputText} , {
-      baseURL: todoUrl,
-    })
-    .then((body) => {
-        let newtasklist = [...tasks];
-        newtasklist[index].tasklist = inputText;
-        setTasks(newtasklist);
-        setedit(false);
-      });
+  const todosave = useMutation(savetodo,{
+    onSuccess:(data)=>{
+      const gettasks = [...queryclient.getQueryData(["alltodo"])];
+      gettasks[index] = data;
+      queryclient.setQueryData(["alltodo"], gettasks); 
+      setedit(false);
     }
-    catch(error){
-        console.error(error);
-        setError(error);
-    }
+  });
+  const savetask = async() => {
+    todosave.mutate({ id: tasks[index].id.toString(), inputText });
+  // try{
+  //  await axios.put(tasks[index].id.toString(), {tasklist:inputText} , {
+  //     baseURL: todoUrl,
+  //   })
+  //   .then((body) => {
+  //       let newtasklist = [...tasks];
+  //       newtasklist[index].tasklist = inputText;
+  //       setTasks(newtasklist);
+  //       setedit(false);
+  //     });
+  //   }
+  //   catch(error){
+  //       console.error(error);
+  //       setError(error);
+  //   }
   }
 
-  if(iserror){
-    throw iserror;
-  }
+  // if(iserror){
+  //   throw iserror;
+  // }
 
+  const { mutate } = useMutation(deletetodo,{
+    onSuccess: (data) => {
+      const gettasks = [...queryclient.getQueryData(["alltodo"])];
+      gettasks.splice(index,1);
+      queryclient.setQueryData(["alltodo"], gettasks);
+    }
+  });
   function removetask(index){
-    let newtasklist = [...tasks];
+    mutate(tasks[index].id.toString());
+    //let newtasklist = [...tasks];
     
     // Delete call to delete the task in db.json
-    axios.delete(tasks[index].id.toString(), {
-      baseURL: todoUrl,
-    })    
-    .then((body) => {
-      newtasklist.splice(index,1);
-      setTasks(newtasklist);   
-    }); 
+    // axios.delete(tasks[index].id.toString(), {
+    //   baseURL: todoUrl,
+    // })    
+    // .then((body) => {
+    //   newtasklist.splice(index,1);
+    //   setTasks(newtasklist);   
+    // }); 
     // End Delete call to delete the task in db.json
 
   }
@@ -67,7 +83,7 @@ export default function Edittodolist({tasks,setTasks,task,index}) {
                       {isedit ? "Cancel" : "Edit"}
                 </button> 
                 {isedit && (
-                      <button className="btn btn-primary col-sm-2" onClick={savetodo}>Save</button>
+                      <button className="btn btn-primary col-sm-2" onClick={savetask}>Save</button>
                 )}
                 <button onClick={()=>removetask(index)} className="btn btn-danger col-sm-2">Remove</button>
             </div>

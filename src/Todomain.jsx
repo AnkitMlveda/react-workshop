@@ -2,7 +2,8 @@ import "./Todo.css";
 import { useState } from "react";
 import Todolist from "./Todolist";
 import axios from "axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addnewtodo } from "./Todoaxios";
 
 export default function Todomain() {
   const [inputValue, setInputValue] = useState("");
@@ -23,22 +24,31 @@ export default function Todomain() {
   function updateVal(e) {
     setInputValue(e.target.value);
   }
+
+  const { mutate } = useMutation(addnewtodo,{
+  onSuccess:(data) =>{
+    const gettasks = queryclient.getQueryData(["alltodo"]);
+    queryclient.setQueryData(["alltodo"], gettasks.concat([data.data]));
+    setInputValue("");
+  }
+  })
+
   function addTodo() {
     if (inputValue === "") {
       document.getElementsByClassName("addbtn").disbled = true;
     } else {
-      setInputValue("");
-
+      mutate(inputValue);
+      // setInputValue("");
       // Post call to Add task in db.json
-      const tasklist = inputValue;
-      axios
-        .post("http://localhost:3000/posts", {
-          tasklist: tasklist,
-        })
-        .then((res) => {
-          const gettasks = queryclient.getQueryData(["alltodo"]);
-          queryclient.setQueryData(["alltodo"], gettasks.concat([res.data]));
-        });
+      // const tasklist = inputValue;
+      // axios
+      //   .post("http://localhost:3000/posts", {
+      //     tasklist: tasklist,
+      //   })
+      //   .then((res) => {
+      //     const gettasks = queryclient.getQueryData(["alltodo"]);
+      //     queryclient.setQueryData(["alltodo"], gettasks.concat([res.data]));
+      //   });
       // .then((res) => {displayTasks(gettasks.concat([res.data]))});
       // End Post call to add task in db.json
     }
